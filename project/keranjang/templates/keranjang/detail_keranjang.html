@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Keranjang Saya
+{% endblock title %}
+
+{% block content %}
+<h2 class="text-2xl font-bold mb-4">Keranjang Saya</h2>
+
+{% if keranjang and keranjang.keranjangitem_set.exists %}
+  <ul class="space-y-4">
+    {% for item in keranjang.keranjangitem_set.all %}
+      <li class="flex items-center p-4 border-b">
+        {% if item.produk.gambar and item.produk.gambar.url %}
+          <img src="{{ item.produk.gambar.url }}" alt="{{ item.produk.nama }}" class="w-24 mr-4">
+        {% endif %}
+        <div class="flex-grow">
+          <a href="{% url 'produk:detail_produk' id=item.produk.id slug=item.produk.slug %}">
+            <h3 class="font-semibold text-lg">{{ item.produk.nama }}</h3>
+          </a>
+          <p class="text-gray-600">{{ item.produk.deskripsi }}</p>
+          <p class="text-indigo-600">Rp. {{ item.produk.harga|floatformat:0 }}</p>
+          <p class="text-gray-600">Kuantitas: {{ item.kuantitas }}</p>
+        </div>
+        <div class="flex-shrink">
+          <form action="{% url 'keranjang:hapus_keranjang' produk_id=item.id %}" method="post">
+            {% csrf_token %}
+            <button class="bg-red-600 text-white px-4 py-1 text-xs rounded" type="submit">Hapus</button>
+          </form>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+  <div class="mt-4 text-right">
+    <p class="text-lg font-bold">Total Harga: Rp. {{ keranjang.get_total_harga|floatformat:0 }}</p>
+  </div>
+  <div class="mt-6 text-right">
+    <form action="{% url 'pemesanan:buat_pesanan' %}" method="post">
+      {% csrf_token %}
+      <button class="bg-indigo-600 text-white px-6 py-2 rounded">Proses ke Checkout</button>
+    </form>
+  </div>
+{% else %}
+  <p class="text-gray-600">Keranjang Anda kosong.</p>
+{% endif %}
+{% endblock content %}

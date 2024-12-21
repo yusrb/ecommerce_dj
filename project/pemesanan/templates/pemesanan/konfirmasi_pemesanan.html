@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Konfirmasi Pemesanan{% endblock title %}
+
+{% block content %}
+<h2>Pesanan anda sudah dibuat!. Dibawah adalah detailnya.</h2>
+
+<h3>Pesanan ID: #{{pesanan.id}}</h3>
+<ul>
+  {% for item in pesanan.pemesananitem_set.all %}
+  <li>
+    <strong>{{item.kuantitas}} X {{item.produk.nama}}</strong>
+    <br>
+    <span>Rp. {{item.harga}}</span>
+  </li>
+  {% endfor %}
+</ul>
+
+<p>Total: Rp. {{pesanan.get_total_biaya}}</p>
+{% endblock content %}

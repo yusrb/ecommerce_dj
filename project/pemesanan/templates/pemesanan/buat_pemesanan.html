@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Buat Pemesanan{% endblock title %}
+
+{% block content %}
+<div class="shadow-md p-4">
+  <h2 class="text-indigo-600 text-2xl font-semibold mb-4">Checkout</h2>
+  <form action="" method="post">
+    {% csrf_token %}
+    {{form|crispy}}
+    <button class="bg-indigo-600 text-white px-4 py-2 mt-1 rounded" type="submit">Buat Pesanan</button>
+  </form>
+</div>
+{% endblock content %}
